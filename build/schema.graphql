@@ -1,0 +1,37 @@
+type Event @entity {
+  id: ID!
+  eventID: Bytes!
+  name: String 
+  description: String
+  link: String
+  imageURL: String 
+  eventOwner: Bytes!
+  eventTimestamp: BigInt!
+  maxCapacity: BigInt!
+  deposit: BigInt!
+  paidout: Boolean!
+  totalRSVPs: BigInt!
+  totalConfirmedAttendies: BigInt!
+  rsvps: [RSVP!] @derivedfrom(field: "event")
+  confirmedAttendees: [Confirmation!] @derivedfrom(field: "event")
+}
+
+type Account @entity {
+  id: ID!
+  totalRSVPS: BigInt!
+  totalAttendedEvents: BigInt!
+  rsvps: [RSVP!] @derivedfrom(field: "attendee")
+  attendedEvents: [Confirmation!] @derivedfrom(field: "attendee")
+}
+
+type RSVP @entity {
+  id: ID!
+  attendee: Account!
+  event: Event!
+}
+
+type Confirmation @entity {
+  id: ID!
+  attendee: Account!
+  event: Event!
+}
